@@ -535,7 +535,6 @@ class WanVideo3DCacheInferPipeline(BasePipeline):
 
         # post-denoising, pre-decoding processing logic
         for unit in self.post_units:
-            print(unit)
             inputs_shared, _, _ = self.unit_runner(unit, self, inputs_shared, inputs_posi, inputs_nega)
 
         # Decode

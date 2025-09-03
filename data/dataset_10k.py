@@ -116,14 +116,18 @@ class Dataset10KTestInfo():
     def __init__(
         self,
         data_root=None,
-        cache_index=None
+        cache_index=None,
+        sample_frames_num=81,
+        max_frame_num=300
     ):  
         self.data_root = data_root
         self.cache_index = cache_index
-    
+        self.sample_frames_num = sample_frames_num
+        self.max_frame_num = max_frame_num
+
     def get_data_dict(self, select_index=None, text=""):
         dataset_10k_parse_tools = Dataset10KParse(self.data_root)
-        select_index = np.linspace(0, 300, 81, dtype=int)
+        select_index = np.linspace(0, self.max_frame_num, self.sample_frames_num, dtype=int)
         data_info = dataset_10k_parse_tools.parse(select_index, True)
         del dataset_10k_parse_tools
 

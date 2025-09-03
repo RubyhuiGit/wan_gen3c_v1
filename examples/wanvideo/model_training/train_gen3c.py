@@ -6,8 +6,6 @@ from diffsynth.trainers.utils import DiffusionTrainingModule, VideoDataset, Mode
 from data.dataset_10k import Dataset10K
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-
-
 class WanTrainingModule(DiffusionTrainingModule):
     def __init__(
         self,
@@ -162,19 +160,16 @@ if __name__ == "__main__":
     #     trainable_params = model.trainable_param_names()
     #     log_file = open("/root/train_params.json", 'w')
     #     for item in sorted(list(trainable_params)):
-    #         print(item, file=log_file)                      # 打印设置了grad=True的参数
-
-    #     param_id_to_name_map = {id(p): name for name, p in model.named_parameters()}
-        
+    #         print(item, file=log_file)                      # 打印设置了grad=True的参数    
+    #     param_id_to_name_map = {id(p): name for name, p in model.named_parameters()} 
     #     params_in_optimizer_names = set()
     #     for param_group in optimizer.param_groups:
     #         for param in param_group['params']:
     #             param_id = id(param)
     #             if param_id in param_id_to_name_map:
     #                 params_in_optimizer_names.add(param_id_to_name_map[param_id])
-    #     with open("/root/opt_params.json", 'w') as log_file:
     #         for name in sorted(list(params_in_optimizer_names)):
-    #             print(name, file=log_file)
+    #             print(name)
 
     scheduler = torch.optim.lr_scheduler.ConstantLR(optimizer)
     launch_training_task(
