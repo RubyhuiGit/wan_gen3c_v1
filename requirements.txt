@@ -13,3 +13,4 @@ pynvml
 pandas
 accelerate
 peft
+warp-lang==1.7.2
