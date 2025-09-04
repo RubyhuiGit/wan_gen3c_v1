@@ -67,6 +67,8 @@ class Dataset10K(torch.utils.data.Dataset):
         video_length = int(self.video_length_drop_end * video_len)    # 视频有效帧的末尾位置    324
         clip_length = min(video_length, (min_sample_n_frames - 1) * self.video_sample_stride + 1)    # 最多采样帧数 * 时间跨度 = 最远采样长度
 
+        min_sample_n_frames = min_sample_n_frames + (1 - (min_sample_n_frames % 4)) % 4       # 保证min_sample_n_frames是4的倍数 + 1
+
         # 随机选择一个起始帧 & 生成要抽取帧的索引
         start_idx   = random.randint(int(self.video_length_drop_start * video_length), video_length - clip_length) if video_length != clip_length else 0
         batch_index = np.linspace(start_idx, start_idx + clip_length - 1, min_sample_n_frames, dtype=int)
@@ -88,7 +90,17 @@ class Dataset10K(torch.utils.data.Dataset):
         text = json_data_info.get('text', '')
         if random.random() < self.text_drop_ratio:
             text = ''
-        frame_info["cache_index"] = self.cache_index
+
+        valid_cache_index = []
+        for cache_i in self.cache_index:
+            if cache_i >= frame_info["rgb_frames"].shape[0]:
+                valid_cache_index.append(frame_info["rgb_frames"].shape[0]-1)
+            elif cache_i < 0:
+                valid_cache_index.append(0)
+            else:
+                valid_cache_index.append(cache_i)
+        frame_info["cache_index"] = valid_cache_index
+
         return frame_info, text, 'video', dataset_dir
 
     def __len__(self):
