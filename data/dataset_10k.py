@@ -67,7 +67,9 @@ class Dataset10K(torch.utils.data.Dataset):
         video_length = int(self.video_length_drop_end * video_len)    # 视频有效帧的末尾位置    324
         clip_length = min(video_length, (min_sample_n_frames - 1) * self.video_sample_stride + 1)    # 最多采样帧数 * 时间跨度 = 最远采样长度
 
-        min_sample_n_frames = min_sample_n_frames + (1 - (min_sample_n_frames % 4)) % 4       # 保证min_sample_n_frames是4的倍数 + 1
+        min_sample_n_frames = ((min_sample_n_frames - 1) // 4) * 4 + 1       # 保证min_sample_n_frames是4的倍数 + 1
+        if min_sample_n_frames < 0 or min_sample_n_frames > video_len:
+            raise ValueError(f"Few Frames will be sampled.")
 
         # 随机选择一个起始帧 & 生成要抽取帧的索引
         start_idx   = random.randint(int(self.video_length_drop_start * video_length), video_length - clip_length) if video_length != clip_length else 0

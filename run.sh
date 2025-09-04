@@ -15,7 +15,7 @@ accelerate launch examples/wanvideo/model_training/train_gen3c.py \
   --lora_rank 32 \
   --find_unused_parameters \
   --video_sample_stride 1 \
-  --video_sample_n_frames 28 \
+  --video_sample_n_frames 21 \
   --extra_inputs "input_image" \
   --cache_index 0 20
 
